@@ -15,6 +15,10 @@ No technique guarantees an AI citation. The original speculative numeric score,
 word-count/heading quotas, mandatory schema, and training-access penalties are
 removed. Missing `llms.txt` is not a defect.
 
+A separate [content-readiness rubric](skills/aeo/references/rubric.md) now
+supports evidence-backed before/after article assessments. It measures editorial
+readiness, not predicted AI visibility.
+
 ## Layout
 
 ```
@@ -39,7 +43,8 @@ cp -r skills/aeo .github/skills/aeo   # or .claude/skills/aeo
 
 ## Use
 
-The intended workflow is **scan -> propose -> approve -> update -> verify**.
+The default **review-first** workflow is **scan -> score -> propose -> approve
+-> update -> verify -> re-score**.
 The agent first reviews docs without changing repository content, presents
 source-backed suggestions with stable IDs and concrete edits, and waits for
 explicit approval. It then applies only the approved changes.
@@ -63,6 +68,42 @@ Approving edits does not implicitly approve commits, pushes, publishing, or
 access/crawler-policy changes. Additional findings remain proposals until
 approved. The skill is behavioral guidance, not a tool-permission boundary;
 use read-only sessions or host permission controls for technical enforcement.
+
+### Auto-apply (explicit opt-in)
+
+Authorize automatic in-scope content improvements when you do not want per-edit
+approval:
+
+> Use the AEO skill in auto-apply mode on `docs/`. Scan and score the pages,
+> apply evidence-backed content improvements without asking me to approve each
+> edit, validate them, and report before/after scores. Do not commit or push.
+
+Autopilot/YOLO tool confirmations alone do not select this mode. An explicit
+request to automatically improve a specified scope does. Uncertain or
+out-of-scope changes stay proposals while independent authorized work continues.
+Auto-apply does not implicitly authorize changes to authentication/crawler
+policies, deployment, dependency installation, or external actions. Commits,
+pushes, or PR creation require explicit delivery instructions.
+
+### Before/after article scoring
+
+The **content-readiness v1** rubric has five dimensions, each worth 20 points:
+purpose/answer coverage, factual support/trust, structure/extraction,
+precision/task usefulness, and identity/maintenance. Each dimension has four
+evidence-backed pass/fail/unknown criteria.
+
+With all 20 criteria assessed, the total is 0-100. Unknowns produce an incomplete
+range rather than a guessed score. Compare the same page, tasks, rubric, and
+criteria before and after actual edits; include changed criterion evidence,
+regressions, and separate delivery/correctness blockers. No schema, word count,
+or crawler trick automatically earns points. A high score cannot guarantee
+indexing or citations.
+
+The agent performs this semantic assessment; the static audit script does not
+compute it. Ask for a rubric assessment explicitly, or let the scan workflow
+include it by default.
+
+### Static audit
 
 Or run the audit directly:
 

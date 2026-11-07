@@ -81,3 +81,8 @@ instead of inventing filters. Separate citation, brand mention, referral, and
 conversion. Bot logs show delivery, not citations; referrers miss some usage.
 Record external query conditions, recrawl delays, personalization, and engine
 changes. Static checks are never a proxy for these outcomes.
+
+The [content-readiness rubric](rubric.md) provides a separate, transparent local
+editorial assessment for before/after scans. Its weights are project-defined,
+not validated ranking factors. Keep unknowns, delivery blockers, and empirical
+retrieval/citation outcomes separate from the rubric score.
