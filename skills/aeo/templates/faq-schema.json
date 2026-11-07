@@ -1,0 +1,22 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is <topic>?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<40-60 word direct answer that matches the visible page text.>"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I <task>?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<Direct answer. Summarize the steps in one or two sentences.>"
+      }
+    }
+  ]
+}

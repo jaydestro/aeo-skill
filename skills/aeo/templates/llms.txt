@@ -1,0 +1,18 @@
+# <Site or Product Name>
+
+> <One or two sentence summary of what this site/product is and who it is for.>
+
+<Optional short paragraph with key facts an LLM should know.>
+
+## Docs
+
+- [Getting started](https://example.com/docs/start): <one-line description>
+- [API reference](https://example.com/docs/api): <one-line description>
+
+## Guides
+
+- [How to <task>](https://example.com/guides/task): <one-line description>
+
+## Optional
+
+- [Blog](https://example.com/blog): <one-line description>
