@@ -16,6 +16,9 @@ Record which claims, passages, examples, and companion pages were inspected.
 Passing a criterion based on that evidence does not certify all possible claims
 or tasks. Keep the assessed set fixed for comparison and disclose sampling;
 unavailable evidence needed to judge a criterion makes it unknown.
+For uncertain or stale external facts, follow the skill's source-verification
+workflow and use permitted web tools before awarding points. Record source URLs
+and version/access dates; search-snippet presence alone is not a pass.
 
 ## Set the assessment context first
 

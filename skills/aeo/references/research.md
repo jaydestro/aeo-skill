@@ -4,6 +4,9 @@ Reviewed 2026-11-07. This is a broad prioritized synthesis, not an exhaustive
 internet census. Direct provider-page fetches failed DNS in the research
 environment; the statements below were verified through indexed primary-source
 excerpts. Reopen current sources before deploying policy changes.
+This ledger is a starting point, not a substitute for live verification of
+uncertain or time-sensitive claims. Follow the source-verification workflow in
+`../SKILL.md`; report unavailable access rather than assuming this review is current.
 
 ## Evidence mapped to implementation
 

@@ -8,6 +8,7 @@ An [Agent Skill](https://agentskills.io) that teaches AI coding agents (GitHub C
 - **Adapts** blogs, tutorials, API references, support, and other content to actual user tasks
 - **Validates** appropriate schema, delivery, version context, and factual attribution
 - **Reviews** search versus training policies and optional agent-facing Markdown/`llms.txt`
+- **Researches** uncertain or stale claims using available web tools and primary sources
 
 See [research and adaptation](skills/aeo/references/research.md) for primary
 sources, evidence limits, content-type playbooks, publishing, and evaluation.
@@ -82,8 +83,26 @@ Autopilot/YOLO tool confirmations alone do not select this mode. An explicit
 request to automatically improve a specified scope does. Uncertain or
 out-of-scope changes stay proposals while independent authorized work continues.
 Auto-apply does not implicitly authorize changes to authentication/crawler
-policies, deployment, dependency installation, or external actions. Commits,
+policies, deployment, dependency installation, or external mutations. Commits,
 pushes, or PR creation require explicit delivery instructions.
+
+### Web verification and agent capabilities
+
+In both modes, uncertain, conflicting, or time-sensitive claims trigger
+authoritative source research when the host agent has permitted browsing tools.
+The agent should search, inspect the relevant primary-source passage, and report
+its URL and version/date context before changing facts or awarding evidence-based
+rubric points. Failed or unavailable browsing stays an explicit unknown; the
+agent continues work that does not depend on that evidence.
+
+The skill does not supply web tools or bypass network restrictions. It also
+does not authorize sending private content to search services. A host agent
+needs web search/fetch or browsing capabilities to perform live verification.
+
+This can remain a reusable **skill**. A dedicated agent is an optional wrapper
+for preconfigured tools, permissions, and a specialized role; it can load this
+same skill rather than duplicate its guidance. Tool availability is determined
+by the host, not by calling the workflow an agent.
 
 ### Before/after article scoring
 
