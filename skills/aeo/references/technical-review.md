@@ -7,6 +7,9 @@ usability; do not prioritize extraction over meaning.
 
 ## Scope and sources
 
+Use [repository-standards.md](repository-standards.md) for shared AEO/technical
+requirements across root/nested READMEs and all repository docs.
+
 | Input | How to inspect | Delivery |
 |---|---|---|
 | Repository root/directory | Discover technical copy, authoritative docs/strings, imported examples, assets, templates, schemas, and relevant code/tests within authorized scope | Review-first proposals or explicitly authorized local auto-apply |
@@ -20,7 +23,9 @@ reference, package/repository/product descriptions, tool capability descriptions
 technical help/errors, onboarding, release notes, and agent-facing explanatory
 instructions. This is not a general advertising or persuasion skill.
 
-The static script reads one HTML/Markdown/MDX file or URL per invocation. The
+The static script accepts multiple HTML/Markdown/MDX files, directories scanned
+recursively, and URLs. Use [report-workflow.md](report-workflow.md) for large-corpus
+coverage, Markdown report artifacts, and applying reviewed recommendations later. The
 agent's review is broader: use native readers, renderers, validators, and tests
 for source strings, reStructuredText, AsciiDoc, JSON/YAML descriptions, PDFs,
 and assets. Raw MDX or HTML extraction can omit components, tabs, and hidden

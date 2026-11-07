@@ -10,6 +10,10 @@ The repository and skill name remain `aeo-skill` / `aeo` for compatibility.
 ## What it does
 
 - **Reviews** local repository sources or live URLs with evidence-backed scores
+- **Scans recursively** across article subdirectories, root/nested READMEs,
+  and other repository documentation with explicit coverage and exclusions
+- **Produces Markdown reports** with stable recommendations that an agent can
+  later apply by report filename or selected IDs
 - **Adapts** technical copy to its audience, purpose, style, and surface constraints
 - **Inspects** code blocks, configuration examples, videos, images, diagrams,
   tables, downloads, and embedded components; reports unavailable inspection
@@ -28,6 +32,16 @@ supports evidence-backed before/after technical-copy assessments. It measures ed
 readiness, not predicted AI visibility.
 See [the technical review playbook](skills/aeo/references/technical-review.md)
 for code/media checklists, source permissions, and report structure.
+
+## Repository documentation standards
+
+[Shared standards](skills/aeo/references/repository-standards.md) apply to every
+authorized repository document, including root/nested READMEs, `.github` guides,
+articles, package docs, contributing/setup/reference/support content, and
+localized/versioned variants. Review purpose, supported facts, human/agent
+readability, correct examples, embedded media, source identity, and maintained
+links/consistency. Requirements are adapted to the document's purpose, not
+applied as universal schema, keyword, word-count, or public-indexing obligations.
 
 ## Layout
 
@@ -62,6 +76,9 @@ descriptions, docs, example sources, and assets. The default local
 The agent first reviews technical content without changing repository content, presents
 source-backed suggestions with stable IDs and concrete edits, and waits for
 explicit approval. It then applies only the approved changes.
+Article folders and nested READMEs are discovered recursively with no arbitrary
+depth or file-count limit. Large scans use bounded batches and report exactly
+which files/subtrees remain pending instead of calling a sample a full review.
 
 For example:
 
@@ -83,6 +100,35 @@ Approving edits does not implicitly approve commits, pushes, publishing, or
 access/crawler-policy changes. In review-first mode, additional findings remain
 proposals until approved. The skill is behavioral guidance, not a tool-permission boundary;
 use read-only sessions or host permission controls for technical enforcement.
+
+### Save a Markdown report and apply it later
+
+> Use the AEO skill to scan this repository recursively, including all article
+> folders, root/nested READMEs, and other repo docs. Review code and embedded
+> media. Save scores, evidence, concrete recommendations, and an apply prompt
+> to `reports/technical-review.md`. Do not change the source content.
+
+Then:
+
+> Apply the proposed local recommendations from `reports/technical-review.md`
+> to this repository. Recheck source snapshots, validate, re-score, and update
+> the report with results. Do not commit or push.
+
+Or approve selected IDs:
+
+> Apply only AEO-0002 and AEO-0007 from `reports/technical-review.md` to `docs/`.
+
+The agent follows [the report/apply workflow](skills/aeo/references/report-workflow.md)
+and [Markdown report template](skills/aeo/templates/review-report.md). Reports
+include per-source scores/criterion evidence, code/media coverage, stable IDs,
+exact changes, dependencies, and original source snapshots. Applying checks
+current files first and skips stale, blocked, or out-of-scope items rather than
+blindly patching. The saved prompt/report itself is not authorization.
+
+`Apply ... from <report.md>` is a prompt for the agent, not a shell command.
+The audit helper does not execute report recommendations. Draft `needs-review`
+suggestions require completion and approval before implementation. Live URL
+findings still require separately authorized and verified local source mappings.
 
 ### Live URLs: reports and scores only
 
@@ -168,11 +214,32 @@ Or run the audit directly:
 ```bash
 python3 skills/aeo/scripts/aeo_audit.py https://example.com --json
 python3 skills/aeo/scripts/aeo_audit.py docs/guide.md --json
+python3 skills/aeo/scripts/aeo_audit.py docs/ blog/ README.md --json
+python3 skills/aeo/scripts/aeo_audit.py . --exclude 'dist' --exclude 'build' \
+  --report technical-review.md
 ```
 
-The static helper audits one file/URL per invocation; it is not the complete
-technical-copy or media review. The agent can accept an entire local repo or
-multiple live URLs and use suitable tools for the other surfaces.
+The static helper accepts multiple files/URLs and recursively scans directories.
+It deduplicates overlapping inputs, skips symlinks and `.git`, `node_modules`,
+`.venv`, `venv`, and `__pycache__` directories, and lists exclusions/errors.
+`--exclude` is repeatable and matches a basename or a path relative to each
+input directory; it does not filter explicitly supplied files. It does not
+implicitly follow gitignore or implement host content-exclusion policies.
+Use only authorized inputs.
+
+`--report` writes a new Markdown **static scaffold**; the parent directory must
+exist and existing files are never overwritten. The scaffold includes source
+hashes, findings, coverage, and manual-review placeholders, but not guessed
+rubric scores. The agent completes the semantic assessment and exact proposals.
+The report destination is excluded from directory discovery.
+
+Single-file/URL JSON retains the individual report object; directory or
+multi-input JSON contains `reports`, `errors`, and `skipped` lists. Errors do not
+prevent independent inputs from being reviewed; exit code 1 reports incomplete
+input processing or a report-write failure. An empty supported corpus is an error.
+
+This helper is not the complete technical-copy or media review. The agent uses
+suitable tools for the other surfaces and shared repo-documentation standards.
 HTML/Markdown/MDX only for this helper: binaries and API contracts need native validators.
 The Markdown parser does not render MDX components or transclusions. The Python
 robots parser is best-effort and does not implement every provider's precedence
