@@ -1,6 +1,8 @@
 ---
 name: aeo
 description: Recursively scan technical copy in repositories or review live URLs, including code and media. Produce Markdown reports with scores, evidence, and recommendations; apply approved recommendations by report filename or use explicitly authorized local auto-apply. Covers blogs, docs, descriptions, READMEs, APIs, and human- or agent-facing technical surfaces.
+license: MIT
+compatibility: Use native Agent Skills discovery or explicit file/context loading. Python 3.10+ is optional for the static helper. Web and media inspection depend on permitted host tools.
 ---
 
 # Technical Copy Readiness for Humans and Agents
@@ -8,6 +10,17 @@ description: Recursively scan technical copy in repositories or review live URLs
 Review technical communication for correctness, clarity, usability, discovery,
 accurate retrieval, and attribution. AEO/GEO is one application, not the entire
 purpose of the skill. Keep the `aeo` skill name for compatibility.
+Use [the coding-agent compatibility guide](references/agent-compatibility.md)
+for installation, activation, and capability limits. These instructions are
+host-neutral: use equivalent permitted file, shell, browsing, media, and edit
+tools without assuming vendor-specific names. Resolve bundled resources and
+scripts relative to this installed `SKILL.md`; keep audit targets/report paths
+relative to the user's workspace. The helper is optional when Python is absent.
+Establish available read/web/media/write capabilities before reviewing. Missing
+tools produce explicit coverage limits and unknowns, not fabricated results.
+If a report artifact cannot be written, disclose the limitation and return the
+consolidated Markdown inline. Host restrictions take precedence; installation
+and activation never authorize edits or override the modes below.
 Apply [shared repository documentation standards](references/repository-standards.md)
 to root/nested READMEs and all authorized repo docs, not just article directories.
 No file, schema, rewrite, or audit score guarantees an AI citation. Read

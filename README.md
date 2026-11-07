@@ -55,15 +55,35 @@ skills/aeo/
 
 ## Install
 
-Copy (or symlink) `skills/aeo` into your agent's skills directory, for example:
+Use one unchanged skill across coding agents. From this cloned repository:
 
 ```bash
-# GitHub Copilot (personal skills)
-cp -r skills/aeo ~/.copilot/skills/aeo
+# Install into a target project for all supported profiles
+python3 scripts/install_skill.py --agent all --root /path/to/project
 
-# Project-level (Copilot / Claude Code)
-cp -r skills/aeo .github/skills/aeo   # or .claude/skills/aeo
+# Or select an agent and scope
+python3 scripts/install_skill.py --agent copilot --root /path/to/project
+python3 scripts/install_skill.py --agent claude --scope user
+python3 scripts/install_skill.py --agent codex --scope user
 ```
+
+Native profiles cover **Copilot, Claude Code, Codex, Gemini CLI, OpenCode,
+Cline, and Roo Code**. **Cursor, Windsurf, Continue, Amazon Q, Kiro, Aider,
+and other agents** have explicit-loading profiles using `.agents/skills/aeo`;
+these do not claim unverified native discovery paths. The same review, product
+context, rubric, report, and approved-apply workflow is used everywhere.
+
+See [coding-agent compatibility](skills/aeo/references/agent-compatibility.md)
+for exact paths, official sources, host/version limits, and smoke checks. Reload
+the host and verify discovery; if needed, explicitly ask it to read the installed
+`SKILL.md` and its references. No installation is necessary when you can load
+`skills/aeo/SKILL.md` directly from this checkout.
+
+The Python 3.10+ installer includes all resources and the license, never
+overwrites conflicting installs, and leaves host rules and permissions untouched.
+Native host sessions are not automatically activated or end-to-end certified.
+Agents without permitted file/context access cannot use the skill; unavailable
+web/media tools remain explicit unknowns. The static helper is optional.
 
 ## Use
 
