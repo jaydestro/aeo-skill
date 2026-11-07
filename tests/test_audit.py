@@ -213,6 +213,23 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(source.read_bytes(), original)
 
+    def test_single_document_still_gets_read_only_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "README.md"
+            source.write_text("# Single document\n", encoding="utf-8")
+            report = root / "readme-review.md"
+            result = subprocess.run([sys.executable, str(SCRIPT), str(source),
+                                     "--report", str(report), "--json"],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["target"], str(source))
+            text = report.read_text()
+            self.assertIn("Inspected: 1", text)
+            self.assertIn("report-only static scan", text)
+            self.assertIn("Not scored: semantic assessment pending", text)
+            self.assertEqual(source.read_text(), "# Single document\n")
+
     def test_walk_permission_error_is_reported(self):
         with tempfile.TemporaryDirectory() as directory:
             def failed_walk(root, followlinks, onerror):

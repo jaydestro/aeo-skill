@@ -88,14 +88,46 @@ the user must identify and authorize local sources; verify the URL-to-source
 mapping before applying changes there.
 
 **Report-only requests:** remain report-only even for local inputs or when the
-host uses autopilot. Output the report in the conversation by default. Save an
-artifact only to an explicitly requested destination. A live URL can be re-scored
+host uses autopilot. Use the consolidated scan/report output contract below;
+an explicit inline-only/no-file request keeps output in the conversation. A live URL can be re-scored
 after actual published updates, but never report suggested edits as an observed
 after score. Unavailable pages/media produce explicit unknowns, not guessed scores.
 
 For mixed inputs, state permissions separately: authorized local updates never
 authorize live-site writes. Source verification on other public URLs remains
 read-only research, not an expansion of edit scope.
+
+## One scan produces scores and a consolidated Markdown report
+
+A **scan**, **report scan**, **score scan**, or **read-only review** is the same combined skill
+workflow: inspect, assess the rubric, and produce a single Markdown report
+covering all requested articles/docs. There is no separate score-only step or
+second report scan needed to obtain actionable recommendations.
+This applies equally to a single document and a repository-wide review.
+A single-document report contains that document's score/evidence and all
+supported recommendations, even in report-only mode. It does not require
+permission to edit the document. Writing the report artifact and updating the
+reviewed content are separate permissions.
+When a Markdown file is requested, use its supplied path; otherwise a scan
+request authorizes saving `technical-copy-review.md` in the current workspace
+(use a new numbered filename if it exists). Explicit inline-only/no-file
+instructions override this artifact default. Writing the report does not
+authorize source edits.
+
+Populate the report with the scope and per-source coverage, rubric evidence and
+scores/ranges, code/media findings, **all supported improvement recommendations**
+with exact changes and safe verification, and a copyable apply-all prompt.
+Keep blocked/unknown/deferred findings visible; never fill gaps with guesses.
+For many articles, keep per-source sections and a consolidated recommendation
+index in the same file. Partial reviews must identify pending articles.
+
+Include "Apply all proposed local recommendations from `<report.md>`" as a
+copyable user instruction, plus selection by IDs. Applying all means the complete
+validated `proposed` local set, respecting dependencies and authorization; it
+does not include stale/blocked/needs-review findings or live-site edits.
+In auto-apply mode, retain the original before assessment and update the same
+report with actual results. A combined scan is the agent's semantic workflow,
+not merely running the static helper's unscored scaffold command.
 
 ## Operating modes
 
@@ -120,9 +152,9 @@ If permission to edit is unclear, remain read-only.
 
 During review-first scanning, use read-only inspection and non-mutating audit commands. Do not
 edit repository files, install dependencies, regenerate outputs, change settings,
-commit, push, or create a pull request, except writing a Markdown report to an
-explicitly requested destination. That permission does not authorize article
-updates. Present suggested snippets/diffs in the response if no report file is requested.
+commit, push, or create a pull request, except writing the consolidated Markdown
+report under the scan output contract. That permission does not authorize article
+updates. Use inline Markdown instead when explicitly requested.
 
 Give each proposed change a stable ID, affected file/URL and section, priority,
 source evidence, rationale, concrete replacement or diff, and verification plan.
@@ -228,6 +260,8 @@ when approval must also be technically enforced.
    requests, deliver the scored report and stop without applying changes.
    Format the report as Markdown. Include a copyable apply prompt for local
    proposals, without treating the stored prompt as authorization.
+   For all skill scans, deliver the single scored report file described above;
+   do not stop at the static scaffold or leave supported recommendations vague.
 
 ## Applying a saved report
 

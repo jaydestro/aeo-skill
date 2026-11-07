@@ -299,7 +299,7 @@ def markdown_report(reports, errors, skipped):
         f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "Report status: draft static scaffold; semantic review required",
         "Rubric: content-readiness v2",
-        "Mode: review-first for local sources; report-only for live URLs",
+        "Mode: report-only static scan; local proposals require later user authorization",
         "",
         "This helper supplies static observations, not completed semantic scores or approved edits.",
         "The reviewing agent must add criterion evidence, code/media inspection, concrete edits,",

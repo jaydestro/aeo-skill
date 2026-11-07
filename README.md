@@ -103,6 +103,26 @@ use read-only sessions or host permission controls for technical enforcement.
 
 ### Save a Markdown report and apply it later
 
+**Scan, report scan, score scan, and read-only review are one workflow.** Every skill scan produces
+one consolidated Markdown report containing
+all requested articles' scores/evidence, code/media coverage, supported improvements
+with exact changes, and apply-all/selected-ID prompts. The default report-file
+name is `technical-copy-review.md` (a new numbered name if already present).
+Specify another destination or request inline-only output when preferred.
+This authorizes the report artifact only, not article changes.
+No second scoring/reporting request is necessary. A named report is ready for
+an apply-all prompt once its concrete local proposals are reviewed.
+
+This also works for **one document without editing it**:
+
+> Use the AEO skill to review `README.md` in report-only mode. Save its scores,
+> evidence, and all supported recommendations to `readme-review.md`.
+> Do not change `README.md` or other source content.
+
+If no report path is given, the normal `technical-copy-review.md` default applies.
+An explicit inline-only/no-file instruction returns Markdown in the response.
+No approval to edit is required to produce this read-only scored report.
+
 > Use the AEO skill to scan this repository recursively, including all article
 > folders, root/nested READMEs, and other repo docs. Review code and embedded
 > media. Save scores, evidence, concrete recommendations, and an apply prompt
@@ -114,6 +134,11 @@ Then:
 > to this repository. Recheck source snapshots, validate, re-score, and update
 > the report with results. Do not commit or push.
 
+To execute the entire validated recommendation set, say:
+
+> Apply all proposed local recommendations from `technical-copy-review.md`.
+> Validate and re-score the changes and update the same report. Do not commit or push.
+
 Or approve selected IDs:
 
 > Apply only AEO-0002 and AEO-0007 from `reports/technical-review.md` to `docs/`.
@@ -124,6 +149,9 @@ include per-source scores/criterion evidence, code/media coverage, stable IDs,
 exact changes, dependencies, and original source snapshots. Applying checks
 current files first and skips stale, blocked, or out-of-scope items rather than
 blindly patching. The saved prompt/report itself is not authorization.
+For large repositories, the report includes a per-article assessment and combined
+recommendation index, with explicit pending/unreviewed coverage. Applying all
+respects dependencies and skips stale, blocked, or unreviewed recommendations.
 
 `Apply ... from <report.md>` is a prompt for the agent, not a shell command.
 The audit helper does not execute report recommendations. Draft `needs-review`
@@ -143,8 +171,9 @@ remote repository, or local checkout as part of a URL-only review. A later local
 update needs explicitly authorized sources and verified URL-to-source mapping.
 
 Local inputs can also be explicitly report-only. Mixed inputs keep separate
-permissions: authorized local changes do not permit live-site changes. Reports
-appear in the response unless a report-file destination is explicitly requested.
+permissions: authorized local changes do not permit live-site changes. Live
+reviews use the same consolidated Markdown report default; explicitly request
+inline-only output when no report artifact is wanted.
 Uninspectable pages are not scored. Current scores are not hypothetical after
 scores; compare only actual updated content against a matching baseline.
 
@@ -249,6 +278,18 @@ Network failures are explicit unknowns/errors, not successful checks. Exit code
 Clean static findings do not establish accurate answers, indexing, or citations.
 
 Run regression checks with `python3 -m unittest discover -s tests -v`.
+
+## Try the skill on an intentionally bad document
+
+[The fictional Cosmos DB Sprocket exercise](examples/sprocket/README.md) includes
+a flawed Learn-style article, a local source-of-truth spec and offline simulator,
+a reference rewrite, code/media defects, and a criterion-by-criterion assessment.
+Sprocket is not a real Azure feature and these are not Microsoft Learn documents.
+
+Use the provided scan/report and apply prompts, then compare your agent's actual
+results against the fixture's tasks and reproducible checks. The reference
+rewrite demonstrates concrete improvements; it does not guarantee that every
+agent will produce them or prove AI-search visibility.
 
 ## License
 

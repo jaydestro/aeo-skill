@@ -72,6 +72,13 @@ Delta: <only for comparable completed assessments>
 
 ## Recommendations
 
+| Recommendation ID | Source ID / path | Priority | Status | Dependencies |
+|---|---|---|---|---|
+| AEO-0001 | SRC-0001 / <source> | <priority> | needs-review | <IDs or none> |
+
+Include every supported improvement in this single report with its concrete
+change below; retain unknown/deferred findings and pending sources explicitly.
+
 ### AEO-0001
 
 Status: needs-review
@@ -104,6 +111,12 @@ After proposals are complete, copy and send an instruction such as:
 > `<report-path>` to `<authorized-repository-root>`. Recheck source snapshots,
 > skip stale or blocked items, validate, and re-score actual changes. Update
 > this report with results. Do not commit, push, deploy, or modify live URLs.
+
+Apply all:
+
+> Apply all proposed local recommendations from `<report-path>` to
+> `<authorized-repository-root>`. Respect dependencies, skip stale/blocked items,
+> validate and re-score, and update this report. Do not commit or push.
 
 For selected changes:
 
