@@ -39,11 +39,30 @@ cp -r skills/aeo .github/skills/aeo   # or .claude/skills/aeo
 
 ## Use
 
-Ask your agent things like:
+The intended workflow is **scan -> propose -> approve -> update -> verify**.
+The agent first reviews docs without changing repository content, presents
+source-backed suggestions with stable IDs and concrete edits, and waits for
+explicit approval. It then applies only the approved changes.
 
-- "Run an AEO audit on https://example.com/pricing"
-- "Rewrite this doc page so it gets cited in AI answers"
-- "Add FAQ schema and an llms.txt for this site"
+For example:
+
+> Use the AEO skill to scan `docs/` for content-readiness improvements. Do not
+> modify files. Propose prioritized changes with IDs, evidence, concrete diffs,
+> and validation plans. Wait for my approval.
+
+Then:
+
+> Approve DOC-01 and DOC-03. Apply only those changes and validate them.
+> Do not commit or push.
+
+Or explicitly authorize delivery:
+
+> Approve all proposed changes. Apply and validate them, then open a pull request.
+
+Approving edits does not implicitly approve commits, pushes, publishing, or
+access/crawler-policy changes. Additional findings remain proposals until
+approved. The skill is behavioral guidance, not a tool-permission boundary;
+use read-only sessions or host permission controls for technical enforcement.
 
 Or run the audit directly:
 
