@@ -1,0 +1,12 @@
+{
+  "name": "aeo-skill",
+  "owner": {"name": "jaydestro"},
+  "plugins": [
+    {
+      "name": "aeo",
+      "source": "./",
+      "version": "0.1.0",
+      "description": "General-purpose content review with an optional technical profile."
+    }
+  ]
+}

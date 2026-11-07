@@ -1,12 +1,15 @@
 # Coding-agent compatibility
 
-## One workflow, different hosts
+## One workflow, different hosts (AEO-R007)
 
 The same `SKILL.md`, rubric, scripts, references, and report template work through
 native Agent Skills discovery or explicit instruction loading. No vendor-specific
 tool names, slash commands, models, or MCP servers are required. Follow host
 instructions and permissions first. Installing a skill does not activate it,
 grant tool access, authorize edits, or select auto-apply.
+The default profile is general-purpose; `technical` is optional. See
+[distribution.md](distribution.md) for one-line package-manager installs,
+provider plugin/extension manifests, and their verified source documentation.
 
 Resolve links and bundled scripts relative to the installed `SKILL.md`, **not**
 the workspace or this repository's original layout. Keep the target repository
@@ -54,7 +57,7 @@ For any agent with permitted file/context access, use:
 > workflow to scan `docs/` and `README.md` with primary product "Azure Cosmos DB"
 > in report-only mode. Inspect code and media, verify uncertain public facts,
 > and save scores, evidence, concrete recommendations, and an apply-all prompt
-> to `technical-copy-review.md`. Do not edit source content.
+> to `content-review.md`. Do not edit source content.
 
 Substitute the actual installed path, or use `skills/aeo/SKILL.md` directly in
 this checkout without installing. User installs need the absolute home path.

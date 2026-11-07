@@ -1,0 +1,7 @@
+{
+  "name": "aeo",
+  "version": "0.1.0",
+  "description": "General-purpose content readiness reviews with scored reports and approved local improvements.",
+  "repository": "https://github.com/jaydestro/aeo-skill",
+  "license": "MIT"
+}

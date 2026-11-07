@@ -6,7 +6,7 @@ skill's [content guidance](content-guidelines.md) and
 [source-backed playbooks](research.md). The weights are transparent design
 choices, not scientifically validated ranking factors.
 
-Use it per technical article, page, or identified copy unit during the initial
+Use it per article, page, or identified copy unit during the initial
 scan and after actual updates. A
 static HTML/Markdown parser cannot score these semantic criteria by itself.
 The agent must inspect content and evidence, identifying what it could not
@@ -17,6 +17,9 @@ Version 2 makes technical-copy and code/media evidence requirements explicit
 and adapts criteria to short descriptions as well as articles. Keep the same
 five dimensions, twenty IDs, and point scale, but establish a v2 baseline;
 do not report a direct delta against a v1 assessment.
+The general profile uses these same criteria without changing the point scale.
+Use [profiles.md](profiles.md) for domain-appropriate evidence and the optional
+technical overlay. Existing v2 technical assessments retain their original context.
 
 Record which claims, passages, examples, and companion pages were inspected.
 Passing a criterion based on that evidence does not certify all possible claims
@@ -28,7 +31,7 @@ and version/access dates; search-snippet presence alone is not a pass.
 
 ## Set the assessment context first
 
-Record page/file identity, source revision, assessment time, content type,
+Record page/file identity, source revision, assessment time, review profile, subject, content type,
 primary product (or unspecified), intended audience/consumer, supported version/language, and representative
 questions/tasks. Select tasks based on the page's actual purpose, including an
 unsupported question or relevant boundary case. Keep this context and the
@@ -38,7 +41,10 @@ Adapt the evidence, not the point scale: a blog needs supported insight, a
 tutorial needs correct steps/results, an API reference needs a correct contract,
 and an internal KB needs authorized source provenance. Narrative articles do
 not need API parameters; API references do not need personal bylines or FAQs.
-Short technical descriptions, README sections, help/error copy, and tool
+Educational, editorial, marketing, policy, narrative, and short-description
+content use their own purpose and evidence, without forced technical requirements.
+Distinguish factual claims from clearly framed fiction and opinion.
+Short descriptions, README sections, help/error copy, and tool
 descriptions use their own purpose and surface constraints; they do not need
 an article introduction or artificial headings. Identify the assessed unit and
 its surrounding context instead of mixing it with unrelated content.
@@ -113,6 +119,7 @@ criterion IDs/evidence. Example: 12 passes before and 17 after means
 requires a new baseline, not a directly comparable delta.
 Changing the primary product also changes assessment context and requires a
 new baseline. A product flag never validates the existence of a feature.
+Changing the profile or subject interpretation likewise requires a new baseline.
 
 Live URL inputs are report-only: score observed content, not an imagined rewrite.
 Re-score only after fetching actual updated content. If a source cannot be
@@ -148,7 +155,7 @@ or permission for model training never deduct points by themselves.
 Source: local repository | live URL
 Mode: report-only | review-first | auto-apply (local only)
 Page/copy unit, source revision or final URL/fetch date:
-Content type, audience, version, target tasks:
+Profile, subject, content type, audience, relevant date/version, target tasks:
 Rubric: content-readiness v2
 
 Dimension | Before (0-20 or range) | After (0-20 or range) | Changed IDs/evidence

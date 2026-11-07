@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "AEO-R001",
+      "behavior": "General is the default; the technical overlay must not suppress relevant evidence or filter sources.",
+      "automated_tests": [
+        "test_general_profile.GeneralProfileTests.test_general_is_default_for_nontechnical_content",
+        "test_general_profile.GeneralProfileTests.test_technical_overlay_adds_checks_without_changing_static_findings",
+        "test_general_profile.GeneralProfileTests.test_batch_profile_reaches_each_source_and_markdown"
+      ],
+      "agent_scenario": "general-and-technical",
+      "automated_scope": "Helper profile context and observations, not semantic domain judgments."
+    },
+    {
+      "id": "AEO-R002",
+      "behavior": "Unavailable evidence stays explicit unknown; never fabricate completed scores or verification.",
+      "automated_tests": [
+        "test_audit.AuditTests.test_failed_policy_is_unknown",
+        "test_general_profile.GeneralProfileTests.test_live_url_keeps_profile_and_explicit_unknowns",
+        "test_distribution.DistributionTests.test_rubric_and_template_retain_all_twenty_criteria"
+      ],
+      "agent_scenario": "unknown-evidence",
+      "automated_scope": "Fetch failures, absence of helper scores, and rubric/template structure only."
+    },
+    {
+      "id": "AEO-R003",
+      "behavior": "One or many sources receive one consolidated report with honest coverage and applyable reviewed proposals.",
+      "automated_tests": [
+        "test_audit.AuditTests.test_single_document_still_gets_read_only_report",
+        "test_audit.AuditTests.test_recursive_many_articles_and_nested_readmes",
+        "test_audit.AuditTests.test_recursive_errors_do_not_drop_valid_articles"
+      ],
+      "agent_scenario": "consolidated-report",
+      "automated_scope": "Discovery, errors and static scaffold; agent scoring/proposal completeness requires evaluation."
+    },
+    {
+      "id": "AEO-R004",
+      "behavior": "Reviews do not edit source files; autopilot, installs, and report text do not authorize edits.",
+      "automated_tests": [
+        "test_audit.AuditTests.test_report_generation_does_not_modify_articles",
+        "test_general_profile.GeneralProfileTests.test_report_text_cannot_be_used_as_an_apply_command"
+      ],
+      "agent_scenario": "authorization",
+      "automated_scope": "Read-only helper and absence of a helper apply command; not host-tool permission enforcement."
+    },
+    {
+      "id": "AEO-R005",
+      "behavior": "Approved apply validates scope, source freshness, dependencies, and original assessment context.",
+      "automated_tests": [
+        "test_audit.AuditTests.test_hash_preserves_exact_file_bytes",
+        "test_sprocket_example.SprocketExampleTests.test_scored_reference_report_has_apply_all_and_valid_source_snapshots"
+      ],
+      "agent_scenario": "approved-apply",
+      "automated_scope": "Snapshot mechanism and controlled reference artifact; actual host apply requires evaluation."
+    },
+    {
+      "id": "AEO-R006",
+      "behavior": "Code and media evidence are inspected or explicitly unavailable, never inferred from embed presence.",
+      "automated_tests": [
+        "test_sprocket_example.SprocketExampleTests.test_before_command_fails_and_after_command_matches_documented_output",
+        "test_sprocket_example.SprocketExampleTests.test_fiction_and_unavailable_video_are_not_misrepresented"
+      ],
+      "agent_scenario": "unknown-evidence",
+      "automated_scope": "Controlled code/media fixtures; arbitrary recordings and semantic claims require evaluation."
+    },
+    {
+      "id": "AEO-R007",
+      "behavior": "Packages share one licensed skill without hooks, permission grants, or overwriting conflicting installs.",
+      "automated_tests": [
+        "test_distribution.DistributionTests.test_manifests_share_name_version_and_license_without_execution_hooks",
+        "test_distribution.DistributionTests.test_bundled_mit_license_is_complete_and_identical",
+        "test_install_skill.InstallSkillTests.test_conflict_preflights_all_targets_and_preserves_existing_rules"
+      ],
+      "agent_scenario": "authorization",
+      "automated_scope": "Packaging metadata, complete copies and local installer safety."
+    },
+    {
+      "id": "AEO-R008",
+      "behavior": "Privacy, fictional context, author meaning, and applicable expert boundaries survive review and edits.",
+      "automated_tests": [
+        "test_sprocket_example.SprocketExampleTests.test_fiction_and_unavailable_video_are_not_misrepresented"
+      ],
+      "agent_scenario": "general-and-technical",
+      "automated_scope": "Fiction labels in the controlled fixture only; privacy/meaning/expertise are agent evaluations."
+    }
+  ]
+}

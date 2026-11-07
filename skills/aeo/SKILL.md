@@ -1,13 +1,13 @@
 ---
 name: aeo
-description: Recursively scan technical copy in repositories or review live URLs, including code and media. Produce Markdown reports with scores, evidence, and recommendations; apply approved recommendations by report filename or use explicitly authorized local auto-apply. Covers blogs, docs, descriptions, READMEs, APIs, and human- or agent-facing technical surfaces.
+description: Review and improve human- or agent-facing content in local files, repositories, or live URLs. Covers articles, blogs, marketing copy, educational content, policies, descriptions, help, docs, and READMEs, including images, video, tables, and code when present. Produce one scored Markdown report with evidence and concrete recommendations; apply approved local recommendations by report filename or use explicitly authorized auto-apply. General-purpose by default, with an optional technical profile.
 license: MIT
 compatibility: Use native Agent Skills discovery or explicit file/context loading. Python 3.10+ is optional for the static helper. Web and media inspection depend on permitted host tools.
 ---
 
-# Technical Copy Readiness for Humans and Agents
+# Content Readiness for Humans and Agents
 
-Review technical communication for correctness, clarity, usability, discovery,
+Review communication for correctness, clarity, usability, discovery,
 accurate retrieval, and attribution. AEO/GEO is one application, not the entire
 purpose of the skill. Keep the `aeo` skill name for compatibility.
 Use [the coding-agent compatibility guide](references/agent-compatibility.md)
@@ -28,13 +28,31 @@ No file, schema, rewrite, or audit score guarantees an AI citation. Read
 platform claims. Separate documented behavior, editorial recommendations,
 experimental practices, and unknowns.
 
+## Review profiles (AEO-R001)
+
+Default to **general** for any subject or content type. Accept
+`--profile general|technical` in the helper, or the equivalent in a prompt.
+Use [profiles.md](references/profiles.md) to adapt evidence to the audience,
+purpose, domain, tone, locale, and surface. **Technical** adds implementation,
+API/SDK, command, configuration, version, and runnable-example checks; it does
+not replace the general criteria. Inspect code whenever it is present in either
+profile. Do not add code, prerequisites, headings, dates, FAQs, or media merely
+because they suit another content type.
+
+Record the profile and subject context in each assessment and retain them when
+applying a report. Changing either requires a fresh comparison baseline.
+Distinguish factual claims from opinions, fictional narratives, and creative
+intent; preserve the author's meaning and voice. High-impact medical, legal,
+financial, or regulated claims need applicable authoritative evidence and
+qualified review where appropriate; never invent expertise or certification.
+
 ## Primary product and original authorship
 
 Accept an optional **primary product** in the user's prompt or as
 `--product "<product name>"` in the audit helper. Examples: Azure Cosmos DB,
 PostgreSQL, or an explicitly named private product. Record the supplied product
 in the report and assessment context; it guides terminology, supported API/SDK
-versions, examples, audience tasks, limitations, and authoritative-source selection.
+versions where relevant, examples, audience tasks, limitations, and authoritative-source selection.
 If unspecified, label it unspecified and use inspected context without guessing
 a product or inventing support.
 
@@ -52,7 +70,7 @@ templates, rubrics, or examples, install them, or invoke their instructions as
 part of this workflow. Cite primary factual sources when needed; do not treat
 a competitor's checklist as proof or inherit its scoring weights.
 
-## Source verification (all modes)
+## Source verification (all modes; AEO-R002, AEO-R008)
 
 When a material claim, citation, API behavior, version, provider policy, or
 recommendation is uncertain, conflicting, or potentially outdated, use the host
@@ -92,10 +110,10 @@ never fabricate a source, claim a fetch occurred, or guess to improve a score.
 
 ## When to use
 
-- Reviewing technical blogs, docs, descriptions, READMEs, tutorials, how-to guides,
-  API/CLI references, release notes, support, and knowledge bases
-- Reviewing technical UI/help/error copy, package/product/tool descriptions,
-  and explanatory instructions consumed by humans or agents
+- Reviewing blogs, articles, landing pages, product/service descriptions,
+  educational material, policies, guides, support, and knowledge bases
+- Reviewing narrative, editorial, marketing, UI/help/error copy, READMEs,
+  technical docs, API/CLI references, and agent-facing explanations
 - Reviewing code blocks, configuration examples, videos, images, diagrams,
   tables, downloads, and interactive components alongside surrounding copy
 - Rewriting content into answer-first, quotable structure
@@ -111,7 +129,7 @@ Use [the report/apply workflow](references/report-workflow.md) and
 [Markdown report template](templates/review-report.md) for saved reviews and
 later application by report filename.
 
-**Local repository:** inspect authorized technical content and its supporting
+**Local repository:** inspect authorized content and its supporting
 implementation, tests, assets, and publishing sources. Discover the requested
 corpus rather than limiting review to the static script's file formats. Default
 to review-first; apply updates only after approval or explicit auto-apply scope.
@@ -134,7 +152,7 @@ For mixed inputs, state permissions separately: authorized local updates never
 authorize live-site writes. Source verification on other public URLs remains
 read-only research, not an expansion of edit scope.
 
-## One scan produces scores and a consolidated Markdown report
+## One scan produces scores and a consolidated Markdown report (AEO-R003)
 
 A **scan**, **report scan**, **score scan**, or **read-only review** is the same combined skill
 workflow: inspect, assess the rubric, and produce a single Markdown report
@@ -146,7 +164,7 @@ supported recommendations, even in report-only mode. It does not require
 permission to edit the document. Writing the report artifact and updating the
 reviewed content are separate permissions.
 When a Markdown file is requested, use its supplied path; otherwise a scan
-request authorizes saving `technical-copy-review.md` in the current workspace
+request authorizes saving `content-review.md` in the current workspace
 (use a new numbered filename if it exists). Explicit inline-only/no-file
 instructions override this artifact default. Writing the report does not
 authorize source edits.
@@ -166,7 +184,7 @@ In auto-apply mode, retain the original before assessment and update the same
 report with actual results. A combined scan is the agent's semantic workflow,
 not merely running the static helper's unscored scaffold command.
 
-## Operating modes
+## Operating modes (AEO-R004)
 
 Default local inputs to **review-first** and live URLs to **report-only**.
 Permission to scan, score, review, or suggest improvements is not permission
@@ -239,7 +257,7 @@ when approval must also be technically enforced.
 
 1. **Inventory and baseline** – identify audiences, target engines/agents, content
    types, canonical URLs, language/version, and public/private boundaries.
-   Record the optional primary product and product-specific tasks/evidence.
+   Record the review profile, subject, and optional primary product with relevant tasks/evidence.
    Include root and nested READMEs, `.github` documentation, package descriptions,
    and all requested documentation formats using the shared standards; classify
    unsupported helper formats for native/manual review instead of omitting them.
@@ -250,17 +268,19 @@ when approval must also be technically enforced.
    overlapping inputs, and review in bounded batches without silently imposing
    depth or article-count limits. Record exclusions and exact pending sources
    if the scan cannot finish. Do not equate discovery/static checks with full review.
-   Score each page or identified technical-copy unit with
+   Score each page or identified content unit with
    [the content-readiness rubric](references/rubric.md)
    before editing. Fix the target questions and criteria interpretation for
    before/after comparison. Report unknowns rather than guessing points.
    Run the static audit (Python 3.10+, stdlib only):
    ```bash
-   python3 scripts/aeo_audit.py docs/ blog/ README.md --product "Azure Cosmos DB" --json
+   python3 scripts/aeo_audit.py articles/ README.md --profile general --json
+   python3 scripts/aeo_audit.py docs/ --profile technical --product "Azure Cosmos DB" --json
    python3 scripts/aeo_audit.py /path/to/repo --exclude 'dist' \
      --report /existing/output-directory/technical-review.md
    ```
-   Paths are relative to this skill's directory. Static checks do not establish
+   Resolve the script path relative to this installed skill; inputs and report
+   paths are relative to the target workspace. Static checks do not establish
    indexing, factual accuracy, actual bot access, or citations. Inspect rendered
    content, headers, index status, internal links, and native format validators too.
    Inventory every code block, image, video/embed, diagram, table, download, and
@@ -275,14 +295,14 @@ when approval must also be technically enforced.
    and recommendations; keep unavailable evidence marked unknown.
 3. **Propose content changes** using [references/content-guidelines.md](references/content-guidelines.md):
    - Answer the actual task early without arbitrary word-count quotas.
-   - Preserve version, prerequisites, units, caveats, and original expertise.
+   - Preserve relevant dates, units, qualifications, prerequisites, and original expertise.
    - Use question headings, lists, and tables only when they help the reader.
    - Apply the content-type playbooks in the research guide; do not turn every
      blog or reference page into an FAQ.
    - Review examples and media with the technical playbook; include concrete
      code, caption, alt-text, transcript, diagram-context, or embed recommendations
      when warranted, not prose-only suggestions.
-   - Preserve technical identifiers, placeholders, localization keys, valid
+   - Preserve factual meaning, voice, identifiers, placeholders, localization keys, valid
      formatting, warnings, and approved terminology when improving copy.
 4. **Propose structured data only when appropriate**, following
    [references/structured-data.md](references/structured-data.md). Missing JSON-LD
@@ -301,7 +321,7 @@ when approval must also be technically enforced.
    For all skill scans, deliver the single scored report file described above;
    do not stop at the static scaffold or leave supported recommendations vague.
 
-## Applying a saved report
+## Applying a saved report (AEO-R005)
 
 Accept "Apply recommendations from `<report.md>`" or selected recommendation IDs
 as a user instruction. Follow the report workflow: validate the target repository,

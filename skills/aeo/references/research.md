@@ -34,7 +34,9 @@ Recheck sources when provider features or policies change; indexes can lag.
 
 ## Content-type playbooks
 
-These playbooks support technical copy, not general marketing. Apply
+These source-backed playbooks cover selected surfaces; use
+[profiles.md](profiles.md) for the general core, including marketing,
+educational, policy, and narrative content, and the optional technical overlay. Apply
 [technical-review.md](technical-review.md) to prose, descriptions, code examples,
 and embedded assets. Live URLs produce reports/scores only; local source updates
 follow the skill's approval and auto-apply scope rules.

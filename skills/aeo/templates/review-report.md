@@ -1,9 +1,11 @@
-# Technical Copy Review Report
+# Content Review Report
 
-Report format: technical-copy-review v1
+Report format: content-review v1
 Report status: draft
 Generated: <actual UTC time>
 Rubric: content-readiness v2
+Review profile: <general or technical; fixed for before/after comparison>
+Subject/domain and purpose: <actual context, not inferred authority>
 Primary product: <supplied product, or unspecified; not evidence of feature support>
 Repository root/identity: <authorized local root and repository identity, if any>
 Source modes: <local review-first/auto-apply/report-only; live URL report-only>
@@ -24,7 +26,7 @@ fixed set of complete assessments; include incomplete and unreviewed sources.
 
 ## Assessment: SRC-0001
 
-Content type, primary product, audience, version/language: <context>
+Profile, subject, content type, primary product, audience, relevant date/version/language: <context>
 Target questions/tasks and assessment scope: <fixed before/after context>
 
 | Dimension | Before /20 or range | After /20 or range | Evidence / changed criterion IDs |

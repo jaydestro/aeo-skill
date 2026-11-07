@@ -22,6 +22,7 @@ UA = "aeo-audit/2.0"
 SEARCH_BOTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot")
 SUPPORTED = {".html", ".htm", ".md", ".markdown", ".mdx"}
 SKIP_DIRS = {".git", "node_modules", ".venv", "venv", "__pycache__"}
+PROFILES = ("general", "technical")
 
 
 class PageParser(HTMLParser):
@@ -134,7 +135,9 @@ def jsonld_types(blocks):
     return sorted(types), errors
 
 
-def audit(target, product=None):
+def audit(target, product=None, profile="general"):
+    if profile not in PROFILES:
+        raise ValueError(f"Unknown review profile: {profile}")
     if product is not None:
         product = product.strip()
         if not product:
@@ -208,6 +211,7 @@ def audit(target, product=None):
     return {
         "target": target,
         "primary_product": product,
+        "review_profile": profile,
         "source_type": "live-url" if is_url else "local",
         "snapshot_sha256": hashlib.sha256(snapshot).hexdigest(),
         "final_url": final_url if is_url else None,
@@ -223,7 +227,10 @@ def audit(target, product=None):
             "Rendered MDX/JS/CSS content, links, examples, schema semantics and export fidelity",
             "Actual bot/WAF access, provider-specific robots precedence, index and snippet eligibility",
             "Fixed-query retrieval, source/version-correct citations, task success and abstention",
-            *([f"Verify terminology, supported APIs/versions, examples, and capability boundaries for {product}"]
+            "Audience, purpose, domain, tone, applicable conditions, and factual versus fictional/opinion claims",
+            *(["Implementation, supported APIs/SDKs, commands, configuration, prerequisites, and expected output"]
+              if profile == "technical" else []),
+            *([f"Verify supported subject/product claims, terminology, examples, and limitations for {product}"]
               if product else []),
         ],
     }
@@ -298,14 +305,18 @@ def markdown_cell(value):
     return re.sub(r"([\\`*_{}\[\]()#+.!|~-])", r"\\\1", text)
 
 
-def markdown_report(reports, errors, skipped, product=None):
+def markdown_report(reports, errors, skipped, product=None, profile="general"):
+    if profile not in PROFILES:
+        raise ValueError(f"Unknown review profile: {profile}")
     lines = [
-        "# Technical Copy Review Report",
+        "# Content Review Report",
         "",
-        "Report format: technical-copy-review v1",
+        "Report format: content-review v1",
         f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "Report status: draft static scaffold; semantic review required",
         "Rubric: content-readiness v2",
+        f"Review profile: {profile}",
+        "Subject/domain, audience, and purpose: pending agent review",
         f"Primary product: {markdown_cell(product) if product else 'Unspecified; do not assume a product'}",
         "Mode: report-only static scan; local proposals require later user authorization",
         "",
@@ -389,6 +400,8 @@ def main():
     parser.add_argument("target", nargs="+", help="URL, local file, or directory (scanned recursively)")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--product", help="Primary product context for the agent's review; does not filter files")
+    parser.add_argument("--profile", choices=PROFILES, default="general",
+                        help="Review context, not a file filter or an automatic semantic score")
     parser.add_argument("--exclude", action="append", default=[],
                         help="Skip a glob matching a basename or root-relative path; repeatable")
     parser.add_argument("--report", help="Write a new Markdown report scaffold; never overwrite a file")
@@ -408,7 +421,7 @@ def main():
     reports = []
     for target in targets:
         try:
-            reports.append(audit(target, product=args.product))
+            reports.append(audit(target, product=args.product, profile=args.profile))
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
             errors.append({"target": target, "error": str(exc)})
     result = {"reports": reports, "errors": errors, "skipped": skipped}
@@ -416,16 +429,19 @@ def main():
     if single:
         result = reports[0] if reports else errors[0]
     result["primary_product"] = args.product
+    result["review_profile"] = args.profile
     try:
         if args.report:
             with Path(args.report).open("x", encoding="utf-8") as output:
-                output.write(markdown_report(reports, errors, skipped, product=args.product))
+                output.write(markdown_report(reports, errors, skipped,
+                                             product=args.product, profile=args.profile))
     except OSError as exc:
         print(f"Report write failed: {exc}", file=sys.stderr)
         return 1
     if args.json:
         print(json.dumps(result, indent=2))
     else:
+        print(f"Review profile: {args.profile}")
         if args.product:
             print(f"Primary product context: {args.product}")
         for report in reports:

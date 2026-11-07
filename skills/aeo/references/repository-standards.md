@@ -1,7 +1,7 @@
-# Shared AEO and technical-copy standards for repository documentation
+# Shared content-readiness standards for repository documentation
 
 Apply these standards to **all authorized repository documentation**, including
-root and nested READMEs, technical blogs, package descriptions, docs indexes,
+root and nested READMEs, articles, blogs, descriptions, docs indexes,
 setup/reference/troubleshooting pages, contributing guides, `.github` guidance,
 release notes, and localized/versioned variants. Discover Markdown/MDX, HTML,
 reStructuredText, AsciiDoc, text documents, and prose embedded in supported
@@ -17,15 +17,16 @@ access and presentation needs from public product articles.
 
 | Standard | Required review evidence | Related rubric |
 |---|---|---|
-| Clear purpose and scope | Identify audience, supported product/version, and what the document helps them understand or do | A1-A3 |
+| Clear purpose and scope | Identify audience, subject, relevant product/date/version, and what the document helps them understand or do | A1-A3 |
 | Useful, direct information | Explain capabilities/tasks early; use concrete details without keyword or word-count quotas | A2-A4 |
-| Supported technical claims | Check implementation, tests, authoritative references, provenance, limitations, and consistency | B1-B4 |
+| Supported factual claims | Check applicable authoritative evidence, provenance, limitations, and consistency; implementation/tests for technical behavior | B1-B4 |
 | Human and agent readability | Appropriate organization, unambiguous terminology, accessible text, self-contained context, and source identity | C1-C4, D1, E1 |
-| Correct examples and prerequisites | Check commands/configuration, language/version, expected output, permissions, failure paths, and safety | D1-D4 |
+| Correct examples and necessary conditions | Check relevant explanations, assumptions, exceptions, and safety; commands/configuration/output when present | D1-D4 |
 | Meaningful embedded content | Inspect images, code, videos, tables, diagrams, and downloads; check text equivalents and disclose unavailable inspection | B1, C3-C4, D4 |
 | Maintained relationships | Resolve relevant links; keep root/nested READMEs, docs, APIs, exports, and historical/localized copies consistent | E2-E4 |
 
 Use [technical-review.md](technical-review.md) for code/media and copy constraints,
+[profiles.md](profiles.md) for general-purpose and technical context,
 [rubric.md](rubric.md) for evidence-backed scoring, and
 [report-workflow.md](report-workflow.md) for coverage and apply-by-report.
 

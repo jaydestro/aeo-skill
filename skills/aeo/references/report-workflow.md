@@ -26,7 +26,7 @@ Use [the Markdown template](../templates/review-report.md). Return Markdown
 in the conversation or save it to the user's requested report path. A score-scan
 or report-scan request is the same operation as a scan: it includes rubric scores,
 recommendations, and one consolidated Markdown file by default. Use
-`technical-copy-review.md` in the current workspace unless another path or
+`content-review.md` in the current workspace unless another path or
 inline-only output is specified. Use a new numbered filename if necessary.
 Permission to save that report allows writing the report artifact, not editing articles.
 Do not overwrite an existing report without approval; use a new versioned path
@@ -57,7 +57,7 @@ does not invent a score or produce execution-ready patches. A draft with
 
 - Report format/version, status (`draft`, `partial`, `reviewed`, or `updated`),
   generated time, rubric version, primary product (or unspecified), source modes,
-  and review coverage. Product context does not filter the requested corpus or
+  review profile, subject/domain, and review coverage. Product context does not filter the requested corpus or
   establish feature availability.
 - Each source: stable ID, local repository-relative path and authorized root
   or requested/final live URL, revision or exact-byte SHA-256 snapshot, assessment
@@ -108,8 +108,11 @@ tools. A skill/report alone cannot execute them.
    discoveries, policy/access changes, implementation behavior, deployment,
    commits, pushes, or unrelated edits. `needs-review` entries require proposal
    completion and approval; do not silently turn vague advice into approved edits.
-   Retain the report's primary product and assessment context. A requested
-   product change needs a new baseline, not silent reinterpretation of proposals.
+   Retain the report's profile, subject, primary product, and assessment context.
+   A context change needs a new baseline, not silent reinterpretation of proposals.
+   Legacy `technical-copy-review v1` reports and filenames remain applyable;
+   retain their original technical context when established. Ambiguous legacy
+   context must be disclosed before producing a comparable score.
 3. Validate paths against the authorized root. Reject traversal, symlink escapes,
    missing/ambiguous repository mappings, and changes outside the allowed scope.
    Reports from live URLs remain report-only unless the user separately identifies

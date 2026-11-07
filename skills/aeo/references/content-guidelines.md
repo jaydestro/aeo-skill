@@ -1,10 +1,11 @@
-# Technical Copy Guidelines
+# Content Guidelines
 
-Scope: technical blogs, docs, READMEs, descriptions, references, and other
-human- or agent-facing technical communication. Follow existing voice,
+Scope: articles, blogs, marketing, education, policies, descriptions, help,
+docs, READMEs, and other human- or agent-facing communication. Follow existing voice,
 terminology, localization, and surface constraints. AEO is a secondary
 application; factual correctness and human usability take priority.
 
+Use [profiles.md](profiles.md) for the general core and technical overlay.
 Read [technical-review.md](technical-review.md) for source permissions and
 required code/media inspection. Review code blocks, videos, images, diagrams,
 tables, downloads, and embedded components with the surrounding copy.
@@ -12,7 +13,8 @@ tables, downloads, and embedded components with the surrounding copy.
 ## Answer-first structure
 
 - **Descriptive headings**: use questions when useful, not a required percentage.
-- **Direct answer first**: address the task early; there is no universal word limit.
+- **Purpose-appropriate opening**: address the task early when appropriate;
+  preserve narrative pacing and creative intent. There is no universal word limit.
 - **Inverted pyramid**: conclusion → supporting facts → nuance/edge cases.
 - **Self-contained passages**: each section must make sense if quoted alone. Repeat the subject instead of "it"/"this".
 
@@ -28,17 +30,17 @@ tables, downloads, and embedded components with the surrounding copy.
 
 ## Clarity
 
-- Clear sentences and plain language; preserve necessary technical precision.
+- Clear sentences and appropriate language; preserve necessary domain precision.
 - Define acronyms on first use.
-- Use specific numbers, dates, and named entities instead of vague claims.
+- Use supported specific numbers, dates, and named entities instead of vague claims; never invent them.
 - Keep one canonical answer per question across the site — avoid contradicting pages.
 
 ## Trust (E-E-A-T)
 
 - Appropriate accountable author/publisher; not mandatory personal bylines on every reference.
-- Visible "Published" and "Updated" dates; keep content fresh.
+- Accurate date/version context where material; do not invent dates for evergreen copy.
 - Cite primary sources with outbound links.
-- Organization info: about page, contact, `Organization` schema with `sameAs` profiles.
+- Identify the responsible source; organization information/schema only when appropriate and supported.
 
 ## Page hygiene
 
@@ -52,7 +54,7 @@ versions, prerequisites, warnings, units, and exceptions in independently
 retrieved passages. Original evidence and tested examples matter more than
 formulaic formatting. See [research.md](research.md) for sources and playbooks.
 
-For short technical descriptions/help/error copy, prioritize purpose, precise
+For short descriptions/help/error copy, prioritize purpose, precise
 capabilities, limitations, and useful next actions; do not require article-style
 headings. Preserve identifiers, translation keys, placeholders, escapes,
 character limits, and valid markup. Label pseudocode versus runnable examples,

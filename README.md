@@ -1,9 +1,10 @@
-# Technical Copy Readiness Skill
+# Content Readiness Skill
 
-An [Agent Skill](https://agentskills.io) for reviewing and improving **technical
-copy for humans and agents**: blogs, docs, READMEs, API/CLI references, package/
-product/tool descriptions, help/errors, onboarding, and other technical surfaces.
-It reviews code examples and embedded media alongside prose. AEO/GEO supports
+An [Agent Skill](https://agentskills.io) for reviewing and improving **content
+for humans and agents**: articles, blogs, marketing copy, education, policies,
+descriptions, help, docs, READMEs, and other communication. General-purpose by
+default, with an optional technical profile for code, APIs, and implementation.
+It reviews embedded media and code when present alongside prose. AEO/GEO supports
 discovery and citation but does not override correctness, clarity, or usability.
 The repository and skill name remain `aeo-skill` / `aeo` for compatibility.
 
@@ -14,7 +15,7 @@ The repository and skill name remain `aeo-skill` / `aeo` for compatibility.
   and other repository documentation with explicit coverage and exclusions
 - **Produces Markdown reports** with stable recommendations that an agent can
   later apply by report filename or selected IDs
-- **Adapts** technical copy to its audience, purpose, style, and surface constraints
+- **Adapts** content to its audience, purpose, domain, style, and surface constraints
 - **Inspects** code blocks, configuration examples, videos, images, diagrams,
   tables, downloads, and embedded components; reports unavailable inspection
 - **Validates** appropriate schema, delivery, version context, and factual attribution
@@ -28,9 +29,9 @@ word-count/heading quotas, mandatory schema, and training-access penalties are
 removed. Missing `llms.txt` is not a defect.
 
 A separate [content-readiness rubric](skills/aeo/references/rubric.md) now
-supports evidence-backed before/after technical-copy assessments. It measures editorial
+supports evidence-backed before/after content assessments. It measures editorial
 readiness, not predicted AI visibility.
-See [the technical review playbook](skills/aeo/references/technical-review.md)
+See [the content/media playbook](skills/aeo/references/technical-review.md)
 for code/media checklists, source permissions, and report structure.
 
 ## Repository documentation standards
@@ -54,6 +55,64 @@ skills/aeo/
 ```
 
 ## Install
+
+### One-line installs
+
+Run skill/package installs from your target project. Pick **one** route rather
+than installing duplicate copies through several managers.
+
+| Route | Command |
+|---|---|
+| Interactive skill/agent selection | `npx skills add jaydestro/aeo-skill --skill aeo` |
+| Every agent supported by the skills CLI, without prompts | `npx skills add jaydestro/aeo-skill --all` |
+| APM, portable skill across its supported standard targets | `apm install jaydestro/aeo-skill/skills/aeo --target all` |
+| APM without a persistent CLI install (requires uv) | `uvx --from apm-cli apm install jaydestro/aeo-skill/skills/aeo --target all` |
+| GitHub Copilot CLI plugin | `copilot plugin install jaydestro/aeo-skill` |
+| Claude Code plugin (current CLI) | `claude plugin install aeo --marketplace jaydestro/aeo-skill` |
+| Gemini CLI extension | `gemini extensions install https://github.com/jaydestro/aeo-skill` |
+
+`npx skills` requires Node.js 22.20+ according to its current documentation;
+APM's Python distribution requires Python 3.10+. Provider commands require that
+provider's CLI and supported version. Add `-g` to skill/APM installs for user
+scope where supported. `--all`/`--target all` cover each manager's documented
+agent set, not every possible product or experimental integration.
+
+For a specific agent:
+
+| Agent | One-line skill install |
+|---|---|
+| Claude Code | `npx skills add jaydestro/aeo-skill --skill aeo -a claude-code` |
+| Codex | `npx skills add jaydestro/aeo-skill --skill aeo -a codex` |
+| GitHub Copilot | `npx skills add jaydestro/aeo-skill --skill aeo -a github-copilot` |
+| Cursor | `npx skills add jaydestro/aeo-skill --skill aeo -a cursor` |
+| Gemini CLI | `npx skills add jaydestro/aeo-skill --skill aeo -a gemini-cli` |
+| Windsurf | `npx skills add jaydestro/aeo-skill --skill aeo -a windsurf` |
+| OpenCode | `npx skills add jaydestro/aeo-skill --skill aeo -a opencode` |
+| Cline | `npx skills add jaydestro/aeo-skill --skill aeo -a cline` |
+| Roo Code | `npx skills add jaydestro/aeo-skill --skill aeo -a roo` |
+| Continue | `npx skills add jaydestro/aeo-skill --skill aeo -a continue` |
+| Kiro CLI | `npx skills add jaydestro/aeo-skill --skill aeo -a kiro-cli` |
+| Amp | `npx skills add jaydestro/aeo-skill --skill aeo -a amp` |
+
+The current Claude CLI can add the marketplace during the one-line install.
+For older versions or interactive use, add it in the session and then select
+`aeo` using `/plugin`:
+
+```text
+/plugin marketplace add jaydestro/aeo-skill
+```
+
+The next interactive command is `/plugin install aeo@aeo-skill`. The skill-only
+`npx` route above needs no marketplace registration.
+
+These are install commands, **not approval to change reviewed content**.
+External managers can write their own configuration, dependency manifests, and
+lockfiles. Review their prompts/policies and avoid force or policy-bypass flags.
+`npx skills` documents telemetry/security-audit requests; use its documented
+`DO_NOT_TRACK=1` setting if desired. Installation does not provision browsing.
+See [packages and primary sources](skills/aeo/references/distribution.md).
+
+### Local installer and manual loading
 
 Use one unchanged skill across coding agents. From this cloned repository:
 
@@ -87,6 +146,24 @@ web/media tools remain explicit unknowns. The static helper is optional.
 
 ## Use
 
+### General-purpose or technical review
+
+> Use the AEO skill to review `articles/` and `landing-page.md` with the general
+> profile. Preserve the intended voice; inspect media and factual claims.
+> Save one scored report to `content-review.md`. Do not edit source content.
+
+```bash
+python3 skills/aeo/scripts/aeo_audit.py articles/ --profile general --report content-review.md
+python3 skills/aeo/scripts/aeo_audit.py docs/ --profile technical --product "Azure Cosmos DB" --report cosmos-review.md
+```
+
+The [general core and technical overlay](skills/aeo/references/profiles.md)
+share the same rubric. Code checks still apply whenever code is present.
+Narrative, marketing, educational, and policy content do not acquire irrelevant
+API requirements. Preserve fiction/opinion boundaries and use qualified review
+for high-impact claims. Fix profile, subject, product, tasks, and evidence scope
+for before/after comparisons; changing them requires a new baseline.
+
 ### Set the primary product
 
 Supply a product as review context in your agent prompt:
@@ -99,7 +176,7 @@ Or pass the flag to the static helper:
 
 ```bash
 python3 skills/aeo/scripts/aeo_audit.py docs/ README.md \
-  --product "Azure Cosmos DB" --report cosmos-review.md --json
+  --profile technical --product "Azure Cosmos DB" --report cosmos-review.md --json
 ```
 
 The product is recorded in JSON and Markdown and guides the agent's terminology,
@@ -117,7 +194,7 @@ Pass a repository root, directories, or files, including relevant READMEs,
 descriptions, docs, example sources, and assets. The default local
 **review-first** workflow is **scan -> score -> propose -> approve
 -> update -> verify -> re-score**.
-The agent first reviews technical content without changing repository content, presents
+The agent first reviews content without changing repository content, presents
 source-backed suggestions with stable IDs and concrete edits, and waits for
 explicit approval. It then applies only the approved changes.
 Article folders and nested READMEs are discovered recursively with no arbitrary
@@ -151,7 +228,7 @@ use read-only sessions or host permission controls for technical enforcement.
 one consolidated Markdown report containing
 all requested articles' scores/evidence, code/media coverage, supported improvements
 with exact changes, and apply-all/selected-ID prompts. The default report-file
-name is `technical-copy-review.md` (a new numbered name if already present).
+name is `content-review.md` (a new numbered name if already present).
 Specify another destination or request inline-only output when preferred.
 This authorizes the report artifact only, not article changes.
 No second scoring/reporting request is necessary. A named report is ready for
@@ -163,7 +240,7 @@ This also works for **one document without editing it**:
 > evidence, and all supported recommendations to `readme-review.md`.
 > Do not change `README.md` or other source content.
 
-If no report path is given, the normal `technical-copy-review.md` default applies.
+If no report path is given, the normal `content-review.md` default applies.
 An explicit inline-only/no-file instruction returns Markdown in the response.
 No approval to edit is required to produce this read-only scored report.
 
@@ -180,7 +257,7 @@ Then:
 
 To execute the entire validated recommendation set, say:
 
-> Apply all proposed local recommendations from `technical-copy-review.md`.
+> Apply all proposed local recommendations from `content-review.md`.
 > Validate and re-score the changes and update the same report. Do not commit or push.
 
 Or approve selected IDs:
@@ -193,6 +270,8 @@ include per-source scores/criterion evidence, code/media coverage, stable IDs,
 exact changes, dependencies, and original source snapshots. Applying checks
 current files first and skips stale, blocked, or out-of-scope items rather than
 blindly patching. The saved prompt/report itself is not authorization.
+Older `technical-copy-review v1` reports and explicitly named report files
+remain usable; preserve their original assessment context.
 For large repositories, the report includes a per-article assessment and combined
 recommendation index, with explicit pending/unreviewed coverage. Applying all
 respects dependencies and skips stale, blocked, or unreviewed recommendations.
@@ -255,7 +334,7 @@ for preconfigured tools, permissions, and a specialized role; it can load this
 same skill rather than duplicate its guidance. Tool availability is determined
 by the host, not by calling the workflow an agent.
 
-### Technical copy, code, and media scoring
+### Content, code, and media scoring
 
 The **content-readiness v2** rubric has five dimensions, each worth 20 points:
 purpose/answer coverage, factual support/trust, structure/extraction,
@@ -311,7 +390,7 @@ multi-input JSON contains `reports`, `errors`, and `skipped` lists. Errors do no
 prevent independent inputs from being reviewed; exit code 1 reports incomplete
 input processing or a report-write failure. An empty supported corpus is an error.
 
-This helper is not the complete technical-copy or media review. The agent uses
+This helper is not the complete content or media review. The agent uses
 suitable tools for the other surfaces and shared repo-documentation standards.
 HTML/Markdown/MDX only for this helper: binaries and API contracts need native validators.
 The Markdown parser does not render MDX components or transclusions. The Python
@@ -321,7 +400,9 @@ Network failures are explicit unknowns/errors, not successful checks. Exit code
 1 means an input could not be audited; findings alone do not fail the command.
 Clean static findings do not establish accurate answers, indexing, or citations.
 
-Run regression checks with `python3 -m unittest discover -s tests -v`.
+Run the offline suite with `python3 -m unittest discover -s tests -v`.
+See [testing and adding rules](CONTRIBUTING.md#testing-and-adding-rules) for
+regressions, rule coverage, opt-in CLI integrations, and agent conformance checks.
 
 ## Try the skill on an intentionally bad document
 
@@ -337,4 +418,11 @@ agent will produce them or prove AI-search visibility.
 
 ## License
 
-MIT
+**MIT**, including the [bundled skill](skills/aeo/LICENSE). See [LICENSE](LICENSE).
+
+## Contribute
+
+Suggest improvements or report bugs by [opening an issue](https://github.com/jaydestro/aeo-skill/issues/new).
+Contribute tested changes through a [pull request](https://github.com/jaydestro/aeo-skill/compare).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for rule tests, source verification,
+original-authorship requirements, and compatibility checks.

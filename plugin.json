@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "aeo",
+  "version": "0.1.0",
+  "description": "General-purpose content readiness reviews with scored Markdown reports, source verification, media inspection, and approved local improvements.",
+  "repository": "https://github.com/jaydestro/aeo-skill",
+  "license": "MIT",
+  "keywords": ["aeo", "content", "editorial", "documentation", "agent-skills"]
+}
