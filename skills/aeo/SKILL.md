@@ -1,17 +1,19 @@
 ---
 name: aeo
-description: Scan and score docs, blogs, API references, knowledge bases, and Markdown/MDX; verify uncertain claims with authoritative web sources. Propose improvements in review-first mode or perform explicitly authorized auto-apply updates. Use for content readiness, AEO/GEO, retrieval, crawler policies, structured data, or llms.txt.
+description: Review technical copy in blogs, docs, READMEs, descriptions, APIs, and other human- or agent-facing surfaces, including code blocks and embedded media. Scan local repository sources with approval-gated or explicitly authorized auto-apply updates; review live URLs with report-only scores and suggestions. Verify uncertain claims using authoritative sources.
 ---
 
-# Answer Engine Optimization (AEO)
+# Technical Copy Readiness for Humans and Agents
 
-AEO improves discovery, accurate retrieval, and attribution of useful content.
+Review technical communication for correctness, clarity, usability, discovery,
+accurate retrieval, and attribution. AEO/GEO is one application, not the entire
+purpose of the skill. Keep the `aeo` skill name for compatibility.
 No file, schema, rewrite, or audit score guarantees an AI citation. Read
 [the research and adaptation guide](references/research.md) before making
 platform claims. Separate documented behavior, editorial recommendations,
 experimental practices, and unknowns.
 
-## Source verification (both modes)
+## Source verification (all modes)
 
 When a material claim, citation, API behavior, version, provider policy, or
 recommendation is uncertain, conflicting, or potentially outdated, use the host
@@ -51,21 +53,56 @@ never fabricate a source, claim a fetch occurred, or guess to improve a score.
 
 ## When to use
 
-- Auditing public URLs or authorized local HTML, Markdown, and MDX
-- Improving blogs, tutorials, how-to guides, references, support, and media transcripts
+- Reviewing technical blogs, docs, descriptions, READMEs, tutorials, how-to guides,
+  API/CLI references, release notes, support, and knowledge bases
+- Reviewing technical UI/help/error copy, package/product/tool descriptions,
+  and explanatory instructions consumed by humans or agents
+- Reviewing code blocks, configuration examples, videos, images, diagrams,
+  tables, downloads, and interactive components alongside surrounding copy
 - Rewriting content into answer-first, quotable structure
 - Adding or fixing structured data (JSON-LD: `FAQPage`, `HowTo`, `Article`, `Organization`, `Product`)
 - Creating `llms.txt` or reviewing `robots.txt` for AI crawlers
 
+## Source and review contract
+
+Accept local repository roots, directories, or files, live HTTP(S) URLs, or a
+mixture. Follow [the technical review playbook](references/technical-review.md)
+for source selection, code/media inspection, and report structure.
+
+**Local repository:** inspect authorized technical content and its supporting
+implementation, tests, assets, and publishing sources. Discover the requested
+corpus rather than limiting review to the static script's file formats. Default
+to review-first; apply updates only after approval or explicit auto-apply scope.
+Do not modify application behavior merely to make the documentation true.
+
+**Live URLs:** always report-only. Fetch/render permitted pages and inspect
+available examples/media; return scores, evidence, and concrete suggestions.
+Do not modify a website, CMS, remote repository, or nearby local checkout.
+Auto-apply does not override this boundary. If implementation is wanted later,
+the user must identify and authorize local sources; verify the URL-to-source
+mapping before applying changes there.
+
+**Report-only requests:** remain report-only even for local inputs or when the
+host uses autopilot. Output the report in the conversation by default. Save an
+artifact only to an explicitly requested destination. A live URL can be re-scored
+after actual published updates, but never report suggested edits as an observed
+after score. Unavailable pages/media produce explicit unknowns, not guessed scores.
+
+For mixed inputs, state permissions separately: authorized local updates never
+authorize live-site writes. Source verification on other public URLs remains
+read-only research, not an expansion of edit scope.
+
 ## Operating modes
 
-Default to **review-first**. Permission to scan, score, review, or suggest
-improvements is not permission to modify content.
+Default local inputs to **review-first** and live URLs to **report-only**.
+Permission to scan, score, review, or suggest improvements is not permission
+to modify content.
 
 | Mode | Authorization | Behavior |
 |---|---|---|
-| `review-first` (default) | A scan/review request | Scan, score, propose concrete edits, then wait for approval |
-| `auto-apply` (opt-in) | Explicit permission to scan and automatically improve a specified scope | Scan, capture baseline scores, apply evidence-backed in-scope improvements, verify, and report without per-edit approval |
+| `report-only` | Every live URL, or an explicit report/no-edits request | Inspect, score, and report suggestions; no updates or edit-approval step |
+| `review-first` (local default) | A local scan/review request | Scan, score, propose concrete edits, then wait for approval |
+| `auto-apply` (opt-in, local sources only) | Explicit permission to scan and automatically improve a specified repository scope | Scan, capture baseline scores, apply evidence-backed in-scope improvements, verify, and report without per-edit approval |
 
 Autopilot/YOLO or tool auto-confirmation alone does not select `auto-apply`.
 The user must explicitly authorize automatic changes, such as "Use auto-apply
@@ -116,19 +153,22 @@ mutations. Leave those as proposals unless specifically authorized. Public
 read-only source research follows the verification rules above. Finish the
 authorized work and report any blockers, failed checks, and deferred proposals.
 
-### Delivery and enforcement (both modes)
+### Delivery and enforcement (all modes)
 
 Approval to edit does not automatically authorize commit, push, PR creation,
 or deployment. Follow the user's explicit delivery instructions. The skill
 guides agent behavior; use host-tool permissions or read-only review sessions
 when approval must also be technically enforced.
 
-## Scan workflow (read-only in both modes)
+## Scan workflow (read-only in all modes)
 
 1. **Inventory and baseline** – identify audiences, target engines/agents, content
    types, canonical URLs, language/version, and public/private boundaries.
+   Identify the source type and mode for every input, existing style/terminology
+   conventions, and source-to-published-page relationships.
    Sample every publishing template, then cover the requested corpus.
-   Score each article/page with [the content-readiness rubric](references/rubric.md)
+   Score each page or identified technical-copy unit with
+   [the content-readiness rubric](references/rubric.md)
    before editing. Fix the target questions and criteria interpretation for
    before/after comparison. Report unknowns rather than guessing points.
    Run the static audit (Python 3.10+, stdlib only):
@@ -138,6 +178,9 @@ when approval must also be technically enforced.
    Paths are relative to this skill's directory. Static checks do not establish
    indexing, factual accuracy, actual bot access, or citations. Inspect rendered
    content, headers, index status, internal links, and native format validators too.
+   Inventory every code block, image, video/embed, diagram, table, download, and
+   interactive component. Record what was inspected versus unavailable;
+   embedding an asset is not evidence that its content was reviewed.
 2. **Identify target tasks** – choose real questions and tasks, including version
    boundaries, errors, comparisons, and unanswerable questions. Verify uncertain
    source claims with permitted web tools before finalizing baseline judgments
@@ -148,6 +191,11 @@ when approval must also be technically enforced.
    - Use question headings, lists, and tables only when they help the reader.
    - Apply the content-type playbooks in the research guide; do not turn every
      blog or reference page into an FAQ.
+   - Review examples and media with the technical playbook; include concrete
+     code, caption, alt-text, transcript, diagram-context, or embed recommendations
+     when warranted, not prose-only suggestions.
+   - Preserve technical identifiers, placeholders, localization keys, valid
+     formatting, warnings, and approved terminology when improving copy.
 4. **Propose structured data only when appropriate**, following
    [references/structured-data.md](references/structured-data.md). Missing JSON-LD
    alone is not an AI-search defect. Match visible content and validate semantics.
@@ -158,7 +206,8 @@ when approval must also be technically enforced.
 6. **Complete the scan.** In review-first mode, present baseline scores, concrete
    proposals, trade-offs, validation plans, and an approval request; stop before
    editing. In explicitly authorized auto-apply mode, continue to the update
-   workflow without requesting per-edit approval.
+   workflow without requesting per-edit approval. For live URLs or report-only
+   requests, deliver the scored report and stop without applying changes.
 
 ## Authorized update workflow
 
@@ -181,15 +230,18 @@ when approval must also be technically enforced.
 
 ## Output format
 
-When reporting an audit, give:
+When reporting a review, give:
 - Scope and untested surfaces, not a predicted visibility score
 - Mode and per-page rubric assessments with criterion evidence and before/after deltas
 - A prioritized table: `ID | Priority | File/section | Issue | Evidence | Proposed fix | Verification`
 - Source-verification results with URLs, version/date context, supporting
   passages, and unresolved or unavailable evidence
-- Concrete rewritten snippets (headings, answer paragraphs, JSON-LD) — not generic advice
+- Code/media inventory, inspection coverage, findings, and asset-specific suggestions
+- Concrete replacements (copy, documented code, captions/alt text, transcript
+  additions, or appropriate schema) rather than generic advice
 - An explicit approval request before updates in review-first mode; auto-apply
-  reports completed work and deferred proposals without per-edit approval
+  reports completed work and deferred proposals without per-edit approval;
+  report-only delivers findings and scores without editing
 
 ## Rules
 

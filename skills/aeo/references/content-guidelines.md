@@ -1,4 +1,13 @@
-# AEO Content Guidelines
+# Technical Copy Guidelines
+
+Scope: technical blogs, docs, READMEs, descriptions, references, and other
+human- or agent-facing technical communication. Follow existing voice,
+terminology, localization, and surface constraints. AEO is a secondary
+application; factual correctness and human usability take priority.
+
+Read [technical-review.md](technical-review.md) for source permissions and
+required code/media inspection. Review code blocks, videos, images, diagrams,
+tables, downloads, and embedded components with the surrounding copy.
 
 ## Answer-first structure
 
@@ -42,3 +51,9 @@ These are editorial recommendations, not confirmed ranking factors. Preserve
 versions, prerequisites, warnings, units, and exceptions in independently
 retrieved passages. Original evidence and tested examples matter more than
 formulaic formatting. See [research.md](research.md) for sources and playbooks.
+
+For short technical descriptions/help/error copy, prioritize purpose, precise
+capabilities, limitations, and useful next actions; do not require article-style
+headings. Preserve identifiers, translation keys, placeholders, escapes,
+character limits, and valid markup. Label pseudocode versus runnable examples,
+and distinguish inspected assets from unavailable recordings or images.

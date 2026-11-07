@@ -34,6 +34,11 @@ Recheck sources when provider features or policies change; indexes can lag.
 
 ## Content-type playbooks
 
+These playbooks support technical copy, not general marketing. Apply
+[technical-review.md](technical-review.md) to prose, descriptions, code examples,
+and embedded assets. Live URLs produce reports/scores only; local source updates
+follow the skill's approval and auto-apply scope rules.
+
 | Surface | Optimize for | Verify |
 |---|---|---|
 | Blog/editorial | Thesis, original analysis, primary evidence, methodology, accountable authorship, real dates, caveats | Claims, citations, and excerpts preserve scope; retain useful narrative |
