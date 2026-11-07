@@ -134,7 +134,11 @@ def jsonld_types(blocks):
     return sorted(types), errors
 
 
-def audit(target):
+def audit(target, product=None):
+    if product is not None:
+        product = product.strip()
+        if not product:
+            raise ValueError("Primary product must not be blank")
     is_url = urlparse(target).scheme in ("http", "https")
     headers = {}
     final_url = target
@@ -203,6 +207,7 @@ def audit(target):
             crawl["llms_txt"] = f"not verified: {exc}"
     return {
         "target": target,
+        "primary_product": product,
         "source_type": "live-url" if is_url else "local",
         "snapshot_sha256": hashlib.sha256(snapshot).hexdigest(),
         "final_url": final_url if is_url else None,
@@ -218,6 +223,8 @@ def audit(target):
             "Rendered MDX/JS/CSS content, links, examples, schema semantics and export fidelity",
             "Actual bot/WAF access, provider-specific robots precedence, index and snippet eligibility",
             "Fixed-query retrieval, source/version-correct citations, task success and abstention",
+            *([f"Verify terminology, supported APIs/versions, examples, and capability boundaries for {product}"]
+              if product else []),
         ],
     }
 
@@ -291,7 +298,7 @@ def markdown_cell(value):
     return re.sub(r"([\\`*_{}\[\]()#+.!|~-])", r"\\\1", text)
 
 
-def markdown_report(reports, errors, skipped):
+def markdown_report(reports, errors, skipped, product=None):
     lines = [
         "# Technical Copy Review Report",
         "",
@@ -299,11 +306,13 @@ def markdown_report(reports, errors, skipped):
         f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "Report status: draft static scaffold; semantic review required",
         "Rubric: content-readiness v2",
+        f"Primary product: {markdown_cell(product) if product else 'Unspecified; do not assume a product'}",
         "Mode: report-only static scan; local proposals require later user authorization",
         "",
         "This helper supplies static observations, not completed semantic scores or approved edits.",
         "The reviewing agent must add criterion evidence, code/media inspection, concrete edits,",
         "and validation plans before recommendations are ready to apply.",
+        "Product context is a review lens, not evidence that a feature exists or a file is in scope.",
         "",
         "## Coverage and scores",
         "",
@@ -379,10 +388,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("target", nargs="+", help="URL, local file, or directory (scanned recursively)")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--product", help="Primary product context for the agent's review; does not filter files")
     parser.add_argument("--exclude", action="append", default=[],
                         help="Skip a glob matching a basename or root-relative path; repeatable")
     parser.add_argument("--report", help="Write a new Markdown report scaffold; never overwrite a file")
     args = parser.parse_args()
+    if args.product is not None:
+        args.product = args.product.strip()
+        if not args.product:
+            parser.error("--product must not be blank")
     if args.report:
         destination = Path(args.report)
         if destination.exists() or destination.is_symlink():
@@ -394,23 +408,26 @@ def main():
     reports = []
     for target in targets:
         try:
-            reports.append(audit(target))
+            reports.append(audit(target, product=args.product))
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
             errors.append({"target": target, "error": str(exc)})
     result = {"reports": reports, "errors": errors, "skipped": skipped}
     single = len(args.target) == 1 and not Path(args.target[0]).is_dir() and not skipped
     if single:
         result = reports[0] if reports else errors[0]
+    result["primary_product"] = args.product
     try:
         if args.report:
             with Path(args.report).open("x", encoding="utf-8") as output:
-                output.write(markdown_report(reports, errors, skipped))
+                output.write(markdown_report(reports, errors, skipped, product=args.product))
     except OSError as exc:
         print(f"Report write failed: {exc}", file=sys.stderr)
         return 1
     if args.json:
         print(json.dumps(result, indent=2))
     else:
+        if args.product:
+            print(f"Primary product context: {args.product}")
         for report in reports:
             print(f"Static readiness observations: {report['target']} (not a visibility score)")
             for finding in report["findings"]:

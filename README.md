@@ -67,6 +67,30 @@ cp -r skills/aeo .github/skills/aeo   # or .claude/skills/aeo
 
 ## Use
 
+### Set the primary product
+
+Supply a product as review context in your agent prompt:
+
+> Use the AEO skill to scan this repository with primary product
+> "Azure Cosmos DB". Review its technical copy, examples, and media; save one
+> scored Markdown report. Do not edit source files.
+
+Or pass the flag to the static helper:
+
+```bash
+python3 skills/aeo/scripts/aeo_audit.py docs/ README.md \
+  --product "Azure Cosmos DB" --report cosmos-review.md --json
+```
+
+The product is recorded in JSON and Markdown and guides the agent's terminology,
+API/version, capability, and source checks. It does not filter files or prove
+feature support. If omitted, it remains unspecified. Keep it fixed for
+before/after comparisons and applying a report.
+
+The skill and examples are independently authored. Third-party skills are
+validation references only; their code, wording, templates, and scoring rules
+are not copied, installed, or executed. Primary factual sources remain cited.
+
 ### Local repository review and updates
 
 Pass a repository root, directories, or files, including relevant READMEs,

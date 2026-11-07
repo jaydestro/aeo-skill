@@ -29,7 +29,7 @@ and version/access dates; search-snippet presence alone is not a pass.
 ## Set the assessment context first
 
 Record page/file identity, source revision, assessment time, content type,
-intended audience/consumer, supported version/language, and representative
+primary product (or unspecified), intended audience/consumer, supported version/language, and representative
 questions/tasks. Select tasks based on the page's actual purpose, including an
 unsupported question or relevant boundary case. Keep this context and the
 criterion interpretations unchanged for before/after comparison.
@@ -111,6 +111,8 @@ For complete comparisons, report `after - before` in points and list changed
 criterion IDs/evidence. Example: 12 passes before and 17 after means
 **60 -> 85 (+25)**. A changed question set, rubric, source scope, or interpretation
 requires a new baseline, not a directly comparable delta.
+Changing the primary product also changes assessment context and requires a
+new baseline. A product flag never validates the existence of a feature.
 
 Live URL inputs are report-only: score observed content, not an imagined rewrite.
 Re-score only after fetching actual updated content. If a source cannot be

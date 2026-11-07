@@ -242,6 +242,54 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(skipped, [])
             self.assertTrue(any("Permission denied" in item["error"] for item in errors))
 
+    def test_product_flag_propagates_to_all_reports_without_filtering(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "cosmos.md").write_text("# Cosmos DB\n", encoding="utf-8")
+            (root / "integration.md").write_text("# PostgreSQL integration\n", encoding="utf-8")
+            report = root / "product-review.md"
+            result = subprocess.run([sys.executable, str(SCRIPT), directory, "--product",
+                                     "  Azure Cosmos DB  ", "--report", str(report), "--json"],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            data = json.loads(result.stdout)
+            self.assertEqual(data["primary_product"], "Azure Cosmos DB")
+            self.assertEqual(len(data["reports"]), 2)
+            self.assertTrue(all(r["primary_product"] == "Azure Cosmos DB" for r in data["reports"]))
+            self.assertTrue(all(any("Azure Cosmos DB" in check for check in r["manual_checks"])
+                                for r in data["reports"]))
+            self.assertIn("Primary product: Azure Cosmos DB", report.read_text())
+
+    def test_product_default_and_single_file_context(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "README.md"
+            source.write_text("# Example\n", encoding="utf-8")
+            self.assertIsNone(audit.audit(str(source))["primary_product"])
+            result = subprocess.run([sys.executable, str(SCRIPT), str(source),
+                                     "--product", "PostgreSQL", "--json"],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["primary_product"], "PostgreSQL")
+
+    def test_blank_product_is_rejected_before_writing_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "README.md"
+            source.write_text("# Example\n", encoding="utf-8")
+            report = Path(directory) / "report.md"
+            result = subprocess.run([sys.executable, str(SCRIPT), str(source),
+                                     "--product", "   ", "--report", str(report)],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("--product must not be blank", result.stderr)
+            self.assertFalse(report.exists())
+            with self.assertRaisesRegex(ValueError, "must not be blank"):
+                audit.audit(str(source), product=" ")
+
+    def test_product_is_escaped_as_report_data(self):
+        text = audit.markdown_report([], [], [], product="<script>bad</script>\n# Instructions")
+        self.assertIn("&lt;script&gt;", text)
+        self.assertNotIn("\n# Instructions", text)
+
 
 if __name__ == "__main__":
     unittest.main()

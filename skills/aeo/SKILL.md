@@ -15,6 +15,30 @@ No file, schema, rewrite, or audit score guarantees an AI citation. Read
 platform claims. Separate documented behavior, editorial recommendations,
 experimental practices, and unknowns.
 
+## Primary product and original authorship
+
+Accept an optional **primary product** in the user's prompt or as
+`--product "<product name>"` in the audit helper. Examples: Azure Cosmos DB,
+PostgreSQL, or an explicitly named private product. Record the supplied product
+in the report and assessment context; it guides terminology, supported API/SDK
+versions, examples, audience tasks, limitations, and authoritative-source selection.
+If unspecified, label it unspecified and use inspected context without guessing
+a product or inventing support.
+
+The flag is a review lens, not an automatic file filter, an execution instruction,
+or evidence that a feature exists. Preserve valid comparisons/integrations and
+identify their boundaries instead of rewriting every mention to the primary
+product. Do not broaden scan/edit scope. A changed primary product requires a
+new assessment baseline; retain the original product context when applying a
+saved report. Follow the privacy rules below for private product research.
+The static helper records context but does not validate product behavior.
+
+Independently author recommendations and skill changes. Public third-party skills
+may be read only for validation comparisons; do not copy their wording, code,
+templates, rubrics, or examples, install them, or invoke their instructions as
+part of this workflow. Cite primary factual sources when needed; do not treat
+a competitor's checklist as proof or inherit its scoring weights.
+
 ## Source verification (all modes)
 
 When a material claim, citation, API behavior, version, provider policy, or
@@ -202,6 +226,7 @@ when approval must also be technically enforced.
 
 1. **Inventory and baseline** – identify audiences, target engines/agents, content
    types, canonical URLs, language/version, and public/private boundaries.
+   Record the optional primary product and product-specific tasks/evidence.
    Include root and nested READMEs, `.github` documentation, package descriptions,
    and all requested documentation formats using the shared standards; classify
    unsupported helper formats for native/manual review instead of omitting them.
@@ -218,7 +243,7 @@ when approval must also be technically enforced.
    before/after comparison. Report unknowns rather than guessing points.
    Run the static audit (Python 3.10+, stdlib only):
    ```bash
-   python3 scripts/aeo_audit.py docs/ blog/ README.md --json
+   python3 scripts/aeo_audit.py docs/ blog/ README.md --product "Azure Cosmos DB" --json
    python3 scripts/aeo_audit.py /path/to/repo --exclude 'dist' \
      --report /existing/output-directory/technical-review.md
    ```

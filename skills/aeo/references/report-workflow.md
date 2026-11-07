@@ -56,7 +56,9 @@ does not invent a score or produce execution-ready patches. A draft with
 ## Required report data
 
 - Report format/version, status (`draft`, `partial`, `reviewed`, or `updated`),
-  generated time, rubric version, source modes, and review coverage.
+  generated time, rubric version, primary product (or unspecified), source modes,
+  and review coverage. Product context does not filter the requested corpus or
+  establish feature availability.
 - Each source: stable ID, local repository-relative path and authorized root
   or requested/final live URL, revision or exact-byte SHA-256 snapshot, assessment
   tasks/context, scores/ranges, criterion evidence, and code/media coverage.
@@ -106,6 +108,8 @@ tools. A skill/report alone cannot execute them.
    discoveries, policy/access changes, implementation behavior, deployment,
    commits, pushes, or unrelated edits. `needs-review` entries require proposal
    completion and approval; do not silently turn vague advice into approved edits.
+   Retain the report's primary product and assessment context. A requested
+   product change needs a new baseline, not silent reinterpretation of proposals.
 3. Validate paths against the authorized root. Reject traversal, symlink escapes,
    missing/ambiguous repository mappings, and changes outside the allowed scope.
    Reports from live URLs remain report-only unless the user separately identifies
