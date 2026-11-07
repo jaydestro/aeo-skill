@@ -5,7 +5,7 @@
   "description": "<Meta description>",
   "author": { "@type": "Person", "name": "<Author name>", "url": "<Author profile URL>" },
   "publisher": { "@type": "Organization", "name": "<Org name>", "url": "<https://example.com>" },
-  "datePublished": "2026-01-01",
-  "dateModified": "2026-01-01",
+  "datePublished": "<Actual ISO 8601 publication date>",
+  "dateModified": "<Actual substantive update date; omit if unknown>",
   "mainEntityOfPage": "<Canonical URL>"
 }

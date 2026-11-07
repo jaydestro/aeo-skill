@@ -3,7 +3,7 @@
   "@type": "HowTo",
   "name": "How to <task>",
   "description": "<One-sentence summary of the outcome.>",
-  "totalTime": "PT10M",
+  "totalTime": "<Measured ISO 8601 duration; omit if unknown>",
   "step": [
     { "@type": "HowToStep", "position": 1, "name": "<Step title>", "text": "<What to do.>" },
     { "@type": "HowToStep", "position": 2, "name": "<Step title>", "text": "<What to do.>" }

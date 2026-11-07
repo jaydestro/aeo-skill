@@ -7,7 +7,7 @@
       "name": "What is <topic>?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<40-60 word direct answer that matches the visible page text.>"
+        "text": "<Accurate answer that matches the visible page text.>"
       }
     },
     {
